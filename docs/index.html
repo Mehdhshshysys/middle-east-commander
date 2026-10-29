@@ -4,40 +4,51 @@
 <meta name="theme-color" content="#0a1512">
 <title>فرمانده خاورمیانه</title>
 <style>
-:root{--bg:#0a1512;--fg:#e6f2ed;--card:#13241f;--ac:#3ddc97;--mut:#8aa59b;--bd:#24403a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eef3f0;--fg:#13201c;--card:#fff;--ac:#0f7a5c;--mut:#566761;--bd:#cfdcd6;color-scheme:light}}
+:root{--bg:#050d0b;--fg:#e6f2ed;--card:rgba(16,32,27,.72);--ac:#3ddc97;--mut:#8fb0a4;--bd:rgba(61,220,151,.24);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html,body{margin:0;background:var(--bg);color:var(--fg);font-family:Tahoma,Vazirmatn,system-ui,sans-serif}
+#bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(circle at 20% 15%,rgba(61,220,151,.22),transparent 45%),radial-gradient(circle at 85% 75%,rgba(63,132,234,.24),transparent 50%),#050d0b;background-size:140% 140%,140% 140%,auto;animation:bgm 16s ease-in-out infinite alternate}
+#bg::before{content:"";position:absolute;left:-50%;right:-50%;top:38%;bottom:-40%;background-image:linear-gradient(rgba(61,220,151,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(61,220,151,.1) 1px,transparent 1px);background-size:46px 46px;transform:perspective(420px) rotateX(62deg);animation:grid 5s linear infinite}
+#bg::after{content:"";position:absolute;width:150vmax;height:150vmax;left:50%;top:25%;margin:-75vmax;border-radius:50%;background:conic-gradient(from 0deg,rgba(61,220,151,.14),transparent 22%);animation:spin 14s linear infinite}
+@keyframes bgm{to{background-position:100% 100%,0% 0%,0 0}}
+@keyframes grid{to{background-position:0 46px,0 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes glow{0%,100%{box-shadow:0 0 12px rgba(61,220,151,.22)}50%{box-shadow:0 0 28px rgba(61,220,151,.5)}}
+@keyframes pop{from{opacity:0;transform:scale(.92) translateY(12px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){#bg,#bg::before,#bg::after,canvas,#ov>div{animation:none}}
 body{max-width:760px;margin:0 auto;padding:8px;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 #hud{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;padding:2px}
-#hud b{font-size:16px}
-#lb{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0;font-size:12px;min-height:22px}
-.chip{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:2px 9px;display:inline-flex;align-items:center;gap:5px}
-.chip i{width:10px;height:10px;border-radius:50%;display:inline-block}
-canvas{width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--bd);touch-action:manipulation}
-#info{min-height:38px;margin:8px 0 4px;padding:8px 10px;background:var(--card);border:1px solid var(--bd);border-radius:10px;font-size:14px;line-height:1.7}
+#hud b{font-size:18px;background:linear-gradient(90deg,#3ddc97,#6fb3ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#lb{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0;font-size:12px;min-height:24px}
+.chip{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:2px 10px;display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(6px)}
+.chip i{width:10px;height:10px;border-radius:50%;display:inline-block;box-shadow:0 0 8px currentColor}
+canvas{width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--bd);touch-action:manipulation;animation:glow 4s ease-in-out infinite}
+#info{min-height:38px;margin:8px 0 4px;padding:8px 10px;background:var(--card);border:1px solid var(--bd);border-radius:12px;font-size:14px;line-height:1.7;backdrop-filter:blur(6px)}
 #log{font-size:12px;color:var(--mut);min-height:48px;line-height:1.6;padding:0 4px}
 .row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-button{font:inherit;font-size:14px;padding:11px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);cursor:pointer;flex:1;min-width:58px}
-button.on,button.pri{background:var(--ac);color:#06120d;border-color:var(--ac);font-weight:700}
-#ov{position:fixed;inset:0;background:rgba(4,10,8,.86);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}
-#ov>div{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px;max-width:420px;width:100%;text-align:center;line-height:1.9}
-#ov h1{margin:0 0 4px;font-size:26px}
+button{font:inherit;font-size:14px;padding:11px 10px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--fg);cursor:pointer;flex:1;min-width:58px;backdrop-filter:blur(6px);transition:transform .12s,background .2s,box-shadow .2s}
+button:active{transform:scale(.94)}
+button.on,button.pri{background:linear-gradient(135deg,#3ddc97,#27b87c);color:#04130c;border-color:#3ddc97;font-weight:700;box-shadow:0 0 16px rgba(61,220,151,.45)}
+#ov{position:fixed;inset:0;background:rgba(3,8,6,.8);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5;backdrop-filter:blur(4px)}
+#ov>div{background:rgba(16,32,27,.92);border:1px solid var(--bd);border-radius:18px;padding:18px;max-width:420px;width:100%;text-align:center;line-height:1.9;animation:pop .45s ease;box-shadow:0 0 40px rgba(61,220,151,.18)}
+#ov h1{margin:0 0 4px;font-size:27px;background:linear-gradient(90deg,#3ddc97,#6fb3ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 #ov p{margin:6px 0;font-size:14px;color:var(--mut)}
+#nm{width:100%;box-sizing:border-box;font:inherit;padding:11px;border-radius:12px;border:1px solid var(--bd);background:rgba(0,0,0,.35);color:var(--fg);text-align:center;margin:8px 0 2px;outline:none}
+#nm:focus{border-color:#3ddc97;box-shadow:0 0 12px rgba(61,220,151,.4)}
 #dif{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}
-</style></head><body>
+</style></head><body><div id="bg"></div>
 <div id="hud"><b>فرمانده خاورمیانه</b><span id="gold"></span><span id="cnt"></span><span id="tm"></span></div>
 <div id="lb"></div>
 <canvas id="cv" width="480" height="348"></canvas>
 <div id="info"></div>
 <div id="log"></div>
 <div class="row"><button data-p="0.25">۲۵٪</button><button data-p="0.5" class="on">۵۰٪</button><button data-p="1">۱۰۰٪</button></div>
-<div class="row"><button id="mis">🚀 موشک ۴۰</button><button id="fort">🛡️ دژ ۳۰</button><button id="cty">🏙️ شهر ۵۰</button></div>
+<div class="row"><button id="bm">🚀 ساخت موشک ۴۰</button><button id="fire">🎯 شلیک (۰)</button></div><div class="row"><button id="cty">🏙️ ساخت شهر ۵۰</button><button id="hs">🏠 ساخت خانه ۲۵</button><button id="fort">🛡️ دژ ۳۰</button></div>
 <div class="row"><button id="pz">⏸</button><button id="sp">×۱</button><button id="sn">🔊</button><button id="rs">↺</button></div>
 <div id="ov"><div>
 <h1 id="ot">فرمانده خاورمیانه</h1>
 <p id="od">یک کشور را انتخاب کن، سربازهایت را رشد بده و منطقه را فتح کن. بازی آفلاین است و با ربات‌ها انجام می‌شود.</p>
 <p>کشور خودت را لمس کن، سپس کشور هم‌مرز را تا حمله کنی. با لمس کشور هم‌مرز خودت، سرباز منتقل می‌شود. با طلا موشک، دژ و شهر بساز.</p>
-<div id="dif"><button data-d="0">آسان</button><button data-d="1" class="on">میانه</button><button data-d="2">دشوار</button><button data-d="3">ناممکن</button></div>
+<input id="nm" maxlength="14" placeholder="نام کشور تو (نام کاربری)" autocomplete="off"><div id="dif"><button data-d="0">آسان</button><button data-d="1" class="on">میانه</button><button data-d="2">دشوار</button><button data-d="3">ناممکن</button></div>
 <p id="st"></p>
 <button class="pri" id="go" style="width:100%">شروع بازی</button>
 </div></div>
@@ -45,18 +56,18 @@ button.on,button.pri{background:var(--ac);color:#06120d;border-color:var(--ac);f
 "use strict";
 const RL=["~1T16G8~5C10","~1T16G8~5C10","~1T16G8~5C10","~1T19G3R2~5C10","~1T20R9C10","~1T16Q4R14C5","~4T7S7Q6R12F4","~11S7Q7R11F4","~10L2S5Q8R10F5","~10L2S4Q9R11F4","~10L2J4Q8R12F4","E9L2J4Q8R12F5","E10A12K2R12P4","E10A13~2R10P5","E10A14~6R6P4","E10A14~8R5P3","E9~3A14U2~4R5P3","E9~4A13U6~3P5","E9~5A12U6O5~3","E9~5A14O7~5","E9~5A14O7~5","D9~6A13O7~5","D9~7A12O5~7","D9~7A13O4~7","D8~8A10O6~8","D8~8Y10O6~8","D7~9Y9O6~9","D7~10Y9~14","D7~11Y8~14"];
 const NM={T:"ترکیه",G:"قفقاز",C:"آسیای مرکزی",S:"سوریه",Q:"عراق",R:"ایران",L:"فلسطین",J:"اردن",E:"مصر",A:"عربستان",K:"کویت",U:"امارات",O:"عمان",Y:"یمن",D:"سودان",P:"پاکستان",F:"افغانستان"};
-const COL=["#22c07a","#e0494b","#3f84ea","#eb9122","#a35cdc","#e0589a","#19b0c2","#b7ae24","#8296a6","#cf6a40"];
+const nm=r=>r.cn||NM[r.id];const COL=["#22c07a","#e0494b","#3f84ea","#eb9122","#a35cdc","#e0589a","#19b0c2","#b7ae24","#8296a6","#cf6a40"];
 const W=40,H=RL.length,CS=12,$=id=>document.getElementById(id);
 const cv=$("cv"),cx=cv.getContext("2d"),bc=document.createElement("canvas");bc.width=cv.width;bc.height=cv.height;const bx=bc.getContext("2d");
 const g=RL.map(r=>{const a=[];r.replace(/(.)(\d+)/g,(_,c,n)=>{for(let i=0;i<+n;i++)a.push(c)});return a});
 const Rg={};
-g.forEach((row,y)=>row.forEach((c,x)=>{if(c==="~")return;(Rg[c]=Rg[c]||{id:c,cells:[],adj:new Set(),o:-1,t:0,f:0,city:0}).cells.push([x,y])}));
+g.forEach((row,y)=>row.forEach((c,x)=>{if(c==="~")return;(Rg[c]=Rg[c]||{id:c,cells:[],adj:new Set(),o:-1,t:0,f:0,city:0,house:0,cn:null}).cells.push([x,y])}));
 g.forEach((row,y)=>row.forEach((c,x)=>{if(c==="~")return;[[1,0],[0,1]].forEach(([dx,dy])=>{const n=(g[y+dy]||[])[x+dx];if(n&&n!=="~"&&n!==c){Rg[c].adj.add(n);Rg[n].adj.add(c)}})}));
 const RS=Object.values(Rg);
 RS.forEach(r=>{let sx=0,sy=0;r.cells.forEach(c=>{sx+=c[0];sy+=c[1]});sx/=r.cells.length;sy/=r.cells.length;r.cells.sort((a,b)=>Math.hypot(a[0]-sx,a[1]-sy)-Math.hypot(b[0]-sx,b[1]-sy));r.lx=r.cells[0][0]+.5;r.ly=r.cells[0][1]+.5});
 const fa=n=>Math.floor(n).toLocaleString("fa-IR");
 const GROW=[.6,.8,1,1.25],IVL=[6,4.5,3,2.2],NB=[3,5,7,9],DN=["آسان","میانه","دشوار","ناممکن"];
-let P=[],sel=null,pct=.5,mode="",diff=1,state="menu",msg="",timer=null,paused=false,speed=1,snd=true,dirty=true,secs=0,LG=[],FL=[],FX=[],AC=null,wins={};
+let pname="فرمانده",P=[],sel=null,pct=.5,mode="",diff=1,state="menu",msg="",timer=null,paused=false,speed=1,snd=true,dirty=true,secs=0,LG=[],FL=[],FX=[],AC=null,wins={};
 try{wins=JSON.parse(localStorage.getItem("mec")||"{}")}catch(e){}
 function beep(f,d,t,v){if(!snd)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),k=AC.createGain();o.type=t||"square";o.frequency.value=f;k.gain.value=v||.05;k.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(k);k.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
 function log(t){LG.unshift(t);LG=LG.slice(0,3);$("log").innerHTML=LG.map(x=>"<div>"+x+"</div>").join("")}
@@ -65,19 +76,19 @@ function fl(a,d,c){FL.push({ax:a.lx*CS,ay:a.ly*CS,bx:d.lx*CS,by:d.ly*CS,t:0,d:.7
 function front(r){for(const i of r.adj)if(Rg[i].o!==r.o)return true;return false}
 function atk(a,d,p){
   const n=a.t*p;if(n<1)return;a.t-=n;const m=1+.6*d.f,old=d.o;fl(a,d,P[a.o].c);
-  if(n>d.t*m){d.t=n-d.t*m;d.o=a.o;d.f=0;d.city=Math.max(0,d.city-1);boom(d,P[a.o].c,20);
-    if(a.o===0){log("✅ "+NM[d.id]+" فتح شد");beep(520,.15);beep(780,.2)}
-    else if(old===0){log("⚠️ "+NM[d.id]+" را از دست دادی");beep(150,.35,"sawtooth",.07)}
+  if(n>d.t*m){d.t=n-d.t*m;d.o=a.o;d.f=0;d.city=Math.max(0,d.city-1);d.house=0;boom(d,P[a.o].c,20);
+    if(a.o===0){log("✅ "+nm(d)+" فتح شد");beep(520,.15);beep(780,.2)}
+    else if(old===0){log("⚠️ "+nm(d)+" را از دست دادی");beep(150,.35,"sawtooth",.07)}
     if(old>0&&!RS.some(r=>r.o===old))log("💀 "+P[old].n+" حذف شد")}
   else{d.t-=n/m;boom(d,"#ffffff",6);if(a.o===0)beep(240,.08)}}
 function mv(a,d,p){const n=a.t*p;a.t-=n;d.t+=n;fl(a,d,"#d9f5e8")}
 function start(){
-  RS.forEach(r=>{r.o=-1;r.f=0;r.city=0;r.t=8+Math.random()*8});
-  P=[{c:COL[0],gold:60,ai:false,cd:0,n:"تو"}];sel=null;mode="";paused=false;secs=0;LG=[];FL=[];FX=[];$("log").innerHTML="";
-  state="pick";msg="کشور خودت را برای شروع لمس کن.";$("ov").style.display="none";$("pz").textContent="⏸";
+  pname=($("nm").value||"").trim().slice(0,14)||"فرمانده";try{localStorage.setItem("mecn",pname)}catch(e){}RS.forEach(r=>{r.o=-1;r.f=0;r.city=0;r.house=0;r.cn=null;r.t=8+Math.random()*8});
+  P=[{c:COL[0],gold:60,ai:false,cd:0,n:pname,ms:0}];sel=null;mode="";paused=false;secs=0;LG=[];FL=[];FX=[];$("log").innerHTML="";
+  state="pick";msg="کشور «"+pname+"» را روی نقشه انتخاب کن.";$("ov").style.display="none";$("pz").textContent="⏸";
   setMode("");clearInterval(timer);timer=setInterval(tick,1000/speed);dirty=true;ui()}
 function begin(r){
-  r.o=0;r.t=40;const pool=RS.filter(x=>x!==r).sort(()=>Math.random()-.5);
+  r.o=0;r.t=40;r.cn=pname;const pool=RS.filter(x=>x!==r).sort(()=>Math.random()-.5);
   for(let i=0;i<NB[diff]&&i<pool.length;i++){P.push({c:COL[i+1],gold:0,ai:true,cd:Math.random()*IVL[diff],n:NM[pool[i].id]});pool[i].o=i+1;pool[i].t=40}
   state="play";sel=r;msg="کشور هم‌مرز را لمس کن تا حمله کنی.";dirty=true}
 function bot(i){
@@ -86,15 +97,15 @@ function bot(i){
   if(best)atk(best.a,best.d,.8);
   else{const a=mine.find(r=>!front(r));if(a){const d=[...a.adj].map(k=>Rg[k]).find(k=>k.o===i);if(d)mv(a,d,.7)}}}
 function botx(i){
-  const p=P[i],mine=RS.filter(r=>r.o===i);
+  const p=P[i],mine=RS.filter(r=>r.o===i);if(diff>=1&&p.gold>=25&&Math.random()<.5){const h=mine.find(r=>r.house<5);if(h){p.gold-=25;h.house++}}
   if(diff>=2&&p.gold>=30){const f=mine.find(r=>front(r)&&!r.f);if(f){p.gold-=30;f.f=1}}
   if(diff>=1&&p.gold>=50){const c=mine.filter(r=>r.city<3).sort((a,b)=>b.t-a.t)[0];if(c){p.gold-=50;c.city++}}
   if(diff===3&&p.gold>=40&&Math.random()<.2){const v=RS.filter(r=>r.o===0&&r.t>30&&[...r.adj].some(k=>Rg[k].o===i)).sort((a,b)=>b.t-a.t)[0];
-    if(v){p.gold-=40;v.t*=.55;boom(v,"#ff9b2f",30);beep(90,.5,"sawtooth",.09);log("🚀 "+p.n+" "+NM[v.id]+" را موشک‌باران کرد")}}}
+    if(v){p.gold-=40;v.t*=.55;boom(v,"#ff9b2f",30);beep(90,.5,"sawtooth",.09);log("🚀 "+p.n+" "+nm(v)+" را موشک‌باران کرد")}}}
 function tick(){
   if(paused||state!=="play")return;secs++;
   RS.forEach(r=>{if(r.o<0)return;const gm=P[r.o].ai?GROW[diff]:1;r.t=Math.min(400,r.t+(.6+r.t*.012+r.city*1.5)*gm)});
-  P.forEach((p,i)=>{const n=RS.filter(r=>r.o===i).length;p.gold+=n*(p.ai?.8:1.2);
+  P.forEach((p,i)=>{const n=RS.filter(r=>r.o===i).length;p.gold+=n*(p.ai?.8:1.2)+RS.reduce((s,r)=>s+(r.o===i?r.house:0),0)*1.5;
     if(p.ai){p.cd-=1;if(p.cd<=0){p.cd=IVL[diff];bot(i);botx(i)}}});
   if(!RS.some(r=>r.o===0))return end(false);
   if(!RS.some(r=>r.o!==0))return end(true);
@@ -108,7 +119,7 @@ function end(win){
   $("od").textContent="سختی "+DN[diff]+" · زمان بازی "+tm();$("go").textContent="بازی دوباره";stats();$("ov").style.display="flex";ui()}
 function stats(){$("st").textContent="پیروزی‌ها: "+DN.map((n,i)=>n+" "+fa(wins[i]||0)).join(" · ")}
 function render(){
-  const gr=bx.createLinearGradient(0,0,0,cv.height);gr.addColorStop(0,"#0f3a52");gr.addColorStop(1,"#08202e");bx.fillStyle=gr;bx.fillRect(0,0,cv.width,cv.height);
+  bx.clearRect(0,0,cv.width,cv.height);
   RS.forEach(r=>{const c=r.o<0||!P[r.o]?"#66756f":P[r.o].c;r.cells.forEach(([x,y])=>{bx.fillStyle=c;bx.fillRect(x*CS,y*CS,CS,CS);const h=((x*73856093)^(y*19349663))>>>0;bx.fillStyle="rgba("+(h%2?"255,255,255":"0,0,0")+","+(h%7)/90+")";bx.fillRect(x*CS,y*CS,CS,CS)})});
   const ed=(x,y,dx,dy,w)=>{if(dx===1)bx.fillRect((x+1)*CS-w/2,y*CS,w,CS);else if(dx===-1)bx.fillRect(x*CS-w/2,y*CS,w,CS);else if(dy===1)bx.fillRect(x*CS,(y+1)*CS-w/2,CS,w);else bx.fillRect(x*CS,y*CS-w/2,CS,w)};
   g.forEach((row,y)=>row.forEach((c,x)=>{if(c==="~")return;[[1,0],[0,1],[-1,0],[0,-1]].forEach(([dx,dy])=>{const n=(g[y+dy]||[])[x+dx];
@@ -117,13 +128,16 @@ function render(){
   bx.textAlign="center";bx.textBaseline="middle";bx.lineJoin="round";
   const tx=(s,x,y)=>{bx.lineWidth=3;bx.strokeStyle="rgba(0,0,0,.7)";bx.strokeText(s,x,y);bx.fillStyle="#fff";bx.fillText(s,x,y)};
   RS.forEach(r=>{const x=r.lx*CS,y=r.ly*CS;
-    if(r.cells.length>10){bx.font="9px Tahoma,sans-serif";tx(NM[r.id],x,y+11)}
+    if(r.cells.length>10||r.cn){bx.font="9px Tahoma,sans-serif";tx((r.cn?"★ ":"")+nm(r),x,y+11)}
     bx.font="700 13px Tahoma,sans-serif";tx(fa(r.t),x,y);
-    if(r.f||r.city){bx.font="11px sans-serif";bx.fillStyle="#fff";bx.fillText((r.f?"🛡":"")+"🏙".repeat(r.city),x,y-12)}})}
+    if(r.f||r.city||r.house){bx.font="11px sans-serif";bx.fillStyle="#fff";bx.fillText((r.f?"🛡":"")+"🏙".repeat(r.city)+"🏠".repeat(r.house),x,y-12)}})}
 let last=performance.now();
 function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(dirty){render();dirty=false}
+  const gr=cx.createLinearGradient(0,0,0,cv.height);gr.addColorStop(0,"#0f3a52");gr.addColorStop(1,"#071b28");cx.fillStyle=gr;cx.fillRect(0,0,cv.width,cv.height);
+  cx.strokeStyle="rgba(150,210,255,.1)";cx.lineWidth=1;
+  for(let k=0;k<22;k++){cx.beginPath();for(let x=0;x<=cv.width;x+=8){const y=k*16+6*Math.sin(x/38+now/700+k);if(x)cx.lineTo(x,y);else cx.moveTo(x,y)}cx.stroke()}
   cx.drawImage(bc,0,0);
   if(sel&&state==="play"){cx.fillStyle="rgba(255,255,255,"+(.14+.1*Math.sin(now/200))+")";sel.cells.forEach(([x,y])=>cx.fillRect(x*CS,y*CS,CS,CS))}
   FL=FL.filter(f=>(f.t+=dt)<f.d);
@@ -133,11 +147,11 @@ function frame(now){
   requestAnimationFrame(frame)}
 function ui(){
   const me=P[0],n=RS.filter(r=>r.o===0).length;
-  $("gold").textContent="💰 "+fa(me?me.gold:0);$("cnt").textContent="🗺️ "+fa(n)+"/"+fa(RS.length);$("tm").textContent="⏱ "+tm();
+  $("gold").textContent="💰 "+fa(me?me.gold:0);$("fire").textContent="🎯 شلیک ("+fa(me?me.ms||0:0)+")";$("cnt").textContent="🗺️ "+fa(n)+"/"+fa(RS.length);$("tm").textContent="⏱ "+tm();
   $("lb").innerHTML=P.map((p,i)=>[p,RS.filter(r=>r.o===i).length]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>'<span class="chip"><i style="background:'+x[0].c+'"></i>'+x[0].n+" "+fa(x[1])+"</span>").join("");
-  const s=sel&&sel.o===0?NM[sel.id]+" · "+fa(sel.t)+" سرباز — ":"";
-  $("info").textContent=(mode==="m"?"موشک: کشور دشمن را لمس کن. ":mode==="f"?"دژ: کشور خودت را لمس کن. ":mode==="c"?"شهر: کشور خودت را لمس کن. ":"")+s+msg}
-function setMode(m){mode=mode===m?"":m;[["m","mis"],["f","fort"],["c","cty"]].forEach(([k,id])=>$(id).classList.toggle("on",mode===k));ui()}
+  const s=sel&&sel.o===0?nm(sel)+" · "+fa(sel.t)+" سرباز — ":"";
+  $("info").textContent=(mode==="m"?"موشک: کشور دشمن را لمس کن. ":mode==="f"?"دژ: کشور خودت را لمس کن. ":mode==="c"?"شهر: کشور خودت را لمس کن. ":mode==="h"?"خانه: کشور خودت را لمس کن. ":"")+s+msg}
+function setMode(m){mode=mode===m?"":m;[["m","fire"],["f","fort"],["c","cty"],["h","hs"]].forEach(([k,id])=>$(id).classList.toggle("on",mode===k));ui()}
 function tap(e){
   if(state==="menu"||state==="over")return;
   const b=cv.getBoundingClientRect(),x=Math.floor((e.clientX-b.left)/b.width*W),y=Math.floor((e.clientY-b.top)/b.height*H),c=(g[y]||[])[x];
@@ -145,12 +159,16 @@ function tap(e){
   if(state==="pick"){begin(r);ui();return}
   const me=P[0];dirty=true;
   if(mode==="m"){
-    if(r.o===0)msg="روی کشور خودت موشک نمی‌شود زد.";else if(me.gold<40)msg="طلای کافی نداری.";
-    else{me.gold-=40;r.t*=.55;boom(r,"#ff9b2f",34);beep(80,.5,"sawtooth",.09);msg="موشک اصابت کرد! 💥";mode="m";setMode("m")}
+    if(r.o===0)msg="روی کشور خودت موشک نمی‌شود زد.";else if(!(me.ms>0))msg="موشک نداری؛ اول بساز.";
+    else{me.ms--;r.t*=.55;boom(r,"#ff9b2f",34);beep(80,.5,"sawtooth",.09);msg="موشک اصابت کرد! 💥";mode="m";setMode("m")}
     ui();return}
   if(mode==="f"){
     if(r.o!==0)msg="فقط برای کشور خودت.";else if(r.f)msg="این کشور دژ دارد.";else if(me.gold<30)msg="طلای کافی نداری.";
     else{me.gold-=30;r.f=1;beep(330,.15);msg="دژ ساخته شد. 🛡️";mode="f";setMode("f")}
+    ui();return}
+  if(mode==="h"){
+    if(r.o!==0)msg="فقط برای کشور خودت.";else if(r.house>=5)msg="حداکثر پنج خانه.";else if(me.gold<25)msg="طلای کافی نداری.";
+    else{me.gold-=25;r.house++;boom(r,"#ffd27a",10);beep(520,.12);msg="خانه ساخته شد؛ درآمد طلا بیشتر شد. 🏠";mode="h";setMode("h")}
     ui();return}
   if(mode==="c"){
     if(r.o!==0)msg="فقط برای کشور خودت.";else if(r.city>=3)msg="حداکثر سطح شهر است.";else if(me.gold<50)msg="طلای کافی نداری.";
@@ -166,11 +184,13 @@ function tap(e){
 cv.addEventListener("click",tap);
 document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{pct=+b.dataset.p;document.querySelectorAll("[data-p]").forEach(x=>x.classList.toggle("on",x===b))});
 document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{diff=+b.dataset.d;document.querySelectorAll("[data-d]").forEach(x=>x.classList.toggle("on",x===b))});
-$("mis").onclick=()=>setMode("m");$("fort").onclick=()=>setMode("f");$("cty").onclick=()=>setMode("c");
+$("fire").onclick=()=>{if(!(P[0]&&P[0].ms>0)&&mode!=="m"){msg="موشک نداری؛ اول «ساخت موشک» را بزن.";ui();return}setMode("m")};
+$("bm").onclick=()=>{const me=P[0];if(state!=="play")return;if(me.gold<40){msg="طلای کافی نداری.";ui();return}me.gold-=40;me.ms++;beep(400,.15);msg="یک موشک ساخته شد. 🚀";ui()};
+$("hs").onclick=()=>setMode("h");$("fort").onclick=()=>setMode("f");$("cty").onclick=()=>setMode("c");
 $("pz").onclick=()=>{if(state!=="play")return;paused=!paused;$("pz").textContent=paused?"▶️":"⏸";msg=paused?"بازی متوقف شد.":"";ui()};
 $("sp").onclick=()=>{speed=speed%3+1;$("sp").textContent="×"+fa(speed);if(state==="play"||state==="pick"){clearInterval(timer);timer=setInterval(tick,1000/speed)}};
 $("sn").onclick=()=>{snd=!snd;$("sn").textContent=snd?"🔊":"🔇"};
 $("rs").onclick=()=>{clearInterval(timer);state="menu";$("ot").textContent="فرمانده خاورمیانه";$("go").textContent="شروع بازی";stats();$("ov").style.display="flex"};
 $("go").onclick=start;
-stats();requestAnimationFrame(frame);
+try{$("nm").value=localStorage.getItem("mecn")||""}catch(e){}stats();requestAnimationFrame(frame);
 </script></body></html>
